@@ -8,7 +8,9 @@ def get_location_encoding(image):
     return face_location, face_encoding
 
 def main():
-    video_path = './test_file/Messi_vid.mp4'
+    # video_path = './test_file/Messi_vid.mp4'
+    video_path=0
+    save_flag=False
     test_img = cv2.imread("./test_file/Messi_1.png")
     _ , test_img_encodings= get_location_encoding(test_img)
     
@@ -26,17 +28,21 @@ def main():
                 cv2.putText(image, str(result[0]), (x1, y1 - 10), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 200), 2)
                 cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 200), 4)
     
-        # cv2.imshow('Face Detection', image) 
-        if frame == 0:   # It's use to intialize video writer ones
-            out = cv2.VideoWriter('output.avi',cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),
-                    20,(image.shape[1],image.shape[0]))
-            frame+=1
-        out.write(image)
+        cv2.imshow('Face Detection', image)
+
+        # For saving Video
+        if save_flag==True:
+            if frame == 0:   # It's use to intialize video writer ones
+                out = cv2.VideoWriter('outputt.avi',cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),
+                        20,(image.shape[1],image.shape[0]))
+                frame+=1
+            out.write(image)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cap.release()
-    out.release()
+    if save_flag==True:
+        out.release()
     cv2.destroyAllWindows()
          
 if __name__ == '__main__':
